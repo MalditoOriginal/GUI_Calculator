@@ -24,6 +24,9 @@ class CalculatorViewModel:
         
         # Observers for display updates
         self.observers = []
+        
+        # Store last error message for tooltip display
+        self.last_error_message = ""
     
     def add_observer(self, observer):
         """
@@ -73,9 +76,31 @@ class CalculatorViewModel:
             self.should_reset_display = False
         
         # Add decimal point only if not already present in current number
-        if '.' not in self.display_value.split('/')[-1].split('*')[-1].split('+')[-1].split('-')[-1]:
+        # Extract the current number being entered (after the last operator)
+        current_number = self._get_current_number()
+        if '.' not in current_number:
             self.display_value += '.'
             self.notify_observers()
+    
+    def _get_current_number(self):
+        """
+        Extract the current number being entered from the display value.
+        
+        Returns:
+            str: The current number string (after the last operator)
+        """
+        # Find the last operator position
+        last_op_pos = -1
+        operators = ['+', '-', '*', '/']
+        
+        for i, char in enumerate(self.display_value):
+            if char in operators:
+                last_op_pos = i
+        
+        # Return the part after the last operator, or the whole string if no operator
+        if last_op_pos >= 0:
+            return self.display_value[last_op_pos + 1:]
+        return self.display_value
     
     def input_operator(self, op):
         """
@@ -129,11 +154,13 @@ class CalculatorViewModel:
             
             self.notify_observers()
             
-        except ZeroDivisionError:
-            self.display_value = "Error"
+        except ZeroDivisionError as e:
+            self.display_value = f"Error: {str(e)}"
+            self.last_error_message = str(e)
             self.notify_observers()
         except Exception as e:
-            self.display_value = "Error"
+            self.display_value = f"Error: {type(e).__name__}: {str(e)}"
+            self.last_error_message = f"{type(e).__name__}: {str(e)}"
             self.notify_observers()
     
     def clear_all(self):
@@ -185,6 +212,7 @@ class CalculatorViewModel:
                 self.display_value = f"{result:g}"  # Removes trailing zeros
             
             self.notify_observers()
-        except Exception:
-            self.display_value = "Error"
+        except Exception as e:
+            self.display_value = f"Error: {type(e).__name__}: {str(e)}"
+            self.last_error_message = f"{type(e).__name__}: {str(e)}"
             self.notify_observers()

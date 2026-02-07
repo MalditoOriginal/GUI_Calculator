@@ -7,7 +7,6 @@
 
 #include "optimized_calculator.hpp"
 #include <stack>
-#include <queue>
 #include <cctype>
 #include <stdexcept>
 #include <string>
@@ -47,11 +46,11 @@ static bool is_operator(char c) {
 /**
  * @brief Helper function to apply an operator to two operands
  * @param op Operator to apply
- * @param b Second operand
- * @param a First operand
+ * @param a First operand (from output queue)
+ * @param b Second operand (from output queue)
  * @return Result of applying operator to operands
  */
-static double apply_operator(char op, double b, double a) {
+static double apply_operator(char op, double a, double b) {
     switch(op) {
         case '+': return calc::add(a, b);
         case '-': return calc::subtract(a, b);
@@ -71,7 +70,7 @@ double evaluate_expression(const std::string& expression) {
     if (expression.empty()) return 0.0;
     
     std::stack<char> operators;
-    std::queue<double> output;
+    std::stack<double> output;
     
     for (size_t i = 0; i < expression.length(); ) {
         char c = expression[i];
@@ -117,10 +116,10 @@ double evaluate_expression(const std::string& expression) {
             while (!operators.empty() && 
                    operators.top() != '(' &&
                    get_precedence(operators.top()) >= get_precedence(c)) {
-                double b = output.front(); output.pop();
-                double a = output.front(); output.pop();
+                double b = output.top(); output.pop();
+                double a = output.top(); output.pop();
                 char op = operators.top(); operators.pop();
-                output.push(apply_operator(op, b, a));
+                output.push(apply_operator(op, a, b));
             }
             operators.push(c);
             i++;
@@ -137,10 +136,10 @@ double evaluate_expression(const std::string& expression) {
         // Handle right parenthesis
         if (c == ')') {
             while (!operators.empty() && operators.top() != '(') {
-                double b = output.front(); output.pop();
-                double a = output.front(); output.pop();
+                double b = output.top(); output.pop();
+                double a = output.top(); output.pop();
                 char op = operators.top(); operators.pop();
-                output.push(apply_operator(op, b, a));
+                output.push(apply_operator(op, a, b));
             }
             if (!operators.empty()) {
                 operators.pop(); // Remove the '('
@@ -160,17 +159,17 @@ double evaluate_expression(const std::string& expression) {
         if (operators.top() == '(' || operators.top() == ')') {
             throw std::runtime_error("Mismatched parentheses");
         }
-        double b = output.front(); output.pop();
-        double a = output.front(); output.pop();
+        double b = output.top(); output.pop();
+        double a = output.top(); output.pop();
         char op = operators.top(); operators.pop();
-        output.push(apply_operator(op, b, a));
+        output.push(apply_operator(op, a, b));
     }
     
     if (output.empty()) {
         throw std::runtime_error("Empty expression");
     }
     
-    return output.front();
+    return output.top();
 }
 
 } // namespace calc

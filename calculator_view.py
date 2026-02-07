@@ -61,6 +61,16 @@ class CalculatorView:
         )
         self.display.grid(row=0, column=0, columnspan=4, sticky="nsew", padx=5, pady=5)
         
+        # Tooltip for error messages
+        self.error_tooltip = tk.Label(
+            self.root,
+            text="",
+            fg="red",
+            font=("Arial", 10),
+            anchor="w"
+        )
+        self.error_tooltip.grid(row=6, column=0, columnspan=4, sticky="nsew", padx=5, pady=2)
+        
         # Define button labels and positions
         button_config = [
             ('C', 1, 0, self.clear_all),
@@ -130,6 +140,18 @@ class CalculatorView:
             value (str): New value to display
         """
         self.display_var.set(value)
+        # Clear error tooltip when display is updated normally
+        if not value.startswith("Error"):
+            self.error_tooltip.config(text="")
+    
+    def show_error_details(self, error_message):
+        """
+        Show detailed error message in tooltip.
+        
+        Args:
+            error_message (str): Error message to display
+        """
+        self.error_tooltip.config(text=error_message)
     
     def input_digit(self, digit):
         """

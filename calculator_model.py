@@ -4,6 +4,7 @@ This class handles all mathematical operations and number parsing
 """
 
 import re
+from decimal import Decimal, getcontext, ROUND_HALF_UP
 
 
 class CalculatorModel:
@@ -38,11 +39,11 @@ class CalculatorModel:
         
         # Validate the expression contains only valid characters
         if not self._is_valid_expression(expression):
-            raise ValueError("Invalid expression")
+            raise ValueError(f"Invalid expression: contains invalid characters")
         
         # Check for division by zero
         if self._has_division_by_zero(expression):
-            raise ZeroDivisionError("Division by zero")
+            raise ZeroDivisionError("Division by zero: cannot divide by zero")
         
         try:
             # Evaluate the expression using Python's eval function
@@ -53,11 +54,11 @@ class CalculatorModel:
             if isinstance(result, (int, float)):
                 return result
             else:
-                raise ValueError("Invalid result")
-        except (SyntaxError, NameError, TypeError):
-            raise ValueError("Invalid expression")
-        except ZeroDivisionError:
-            raise ZeroDivisionError("Division by zero")
+                raise ValueError(f"Invalid result: got {type(result).__name__} instead of number")
+        except (SyntaxError, NameError, TypeError) as e:
+            raise ValueError(f"Invalid expression: {type(e).__name__} - {str(e)}")
+        except ZeroDivisionError as e:
+            raise ZeroDivisionError(f"Division by zero: {str(e)}")
     
     def _is_valid_expression(self, expression):
         """
@@ -86,8 +87,8 @@ class CalculatorModel:
         """
         # Look for division by zero patterns
         # This is a simplified check - in a real application, a more robust parser would be needed
-        # Check for /0 followed by an operator or end of string
-        div_by_zero_pattern = r'/\s*0(?=[+\-*/\)])|/\s*0$'
+        # Check for /0, /0.0, /00, etc. followed by an operator or end of string
+        div_by_zero_pattern = r'/\s*0+\.?0*\s*(?=[+\-*/\)])|/\s*0+\.?0*\s*$'
         return bool(re.search(div_by_zero_pattern, expression))
     
     def add(self, a, b):
@@ -131,21 +132,26 @@ class CalculatorModel:
     
     def divide(self, a, b):
         """
-        Divides first number by second number.
+        Divides first number by second number using Decimal for precision.
         
         Args:
             a (float): First number (dividend)
             b (float): Second number (divisor)
             
         Returns:
-            float: Quotient of a divided by b
+            float: Quotient of a divided by b (rounded to 10 decimal places)
             
         Raises:
             ZeroDivisionError: If b is zero
         """
         if b == 0:
             raise ZeroDivisionError("Cannot divide by zero")
-        return a / b
+        
+        # Use Decimal for precise division, then round to avoid floating-point errors
+        result = Decimal(str(a)) / Decimal(str(b))
+        # Round to 10 decimal places to avoid floating-point precision issues
+        result = result.quantize(Decimal('0.0000000001'), rounding=ROUND_HALF_UP)
+        return float(result)
     
     def parse_number(self, number_str):
         """
