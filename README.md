@@ -1,70 +1,101 @@
-# GUI Calculator
+# 🧮 GUI Calculator
 
 A modern calculator application built with Python using the MVVM (Model-View-ViewModel) architecture pattern.
 
-## Features
+---
 
-- **Basic arithmetic operations**: Addition, subtraction, multiplication, division
-- **Decimal support**: Accurate decimal number handling
-- **Error handling**: Division by zero detection and error display
-- **Keyboard support**: Full keyboard input support
-- **Clean UI**: Simple and intuitive graphical interface
+## ✨ Features
 
-## Architecture
+| Feature | Description |
+|---------|-------------|
+| 📊 Basic Arithmetic | Addition, subtraction, multiplication, division |
+| 🔢 Decimal Support | Accurate decimal number handling |
+| ⚠️ Error Handling | Division by zero detection and error display |
+| ⌨️ Keyboard Support | Full keyboard input support |
+| 🎨 Clean UI | Simple and intuitive graphical interface |
 
-The application follows the MVVM pattern:
+---
 
-- **Model** ([`calculator_model.py`](calculator_model.py)): Core calculation logic and expression evaluation
-- **ViewModel** ([`calculator_viewmodel.py`](calculator_viewmodel.py)): Manages UI state and handles user commands
-- **View** ([`calculator_view.py`](calculator_view.py)): Graphical user interface using tkinter
+## 🏗️ Architecture
 
-## Requirements
+The application follows the **MVVM** pattern:
 
-- Python 3.6 or higher
-- No external dependencies (uses standard library only)
+| Component | File | Description |
+|-----------|------|-------------|
+| **Model** | [`calculator_model.py`](calculator_model.py) | Core calculation logic and expression evaluation |
+| **ViewModel** | [`calculator_viewmodel.py`](calculator_viewmodel.py) | Manages UI state and handles user commands |
+| **View** | [`calculator_view.py`](calculator_view.py) | Graphical user interface using tkinter |
 
-## Installation
+---
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/MalditoOriginal/GUI_Calculator.git
-   cd GUI_Calculator
-   ```
+## 📋 Requirements
 
-2. Run the calculator:
-   ```bash
-   python main.py
-   ```
+- **Python**: 3.6 or higher
+- **Dependencies**: None (uses standard library only)
 
-## Usage
+---
+
+## 🚀 Installation
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/MalditoOriginal/GUI_Calculator.git
+cd GUI_Calculator
+```
+
+### Run the Calculator
+
+```bash
+python main.py
+```
+
+---
+
+## 🎮 Usage
 
 ### Mouse/Click Input
-- Click number buttons to enter numbers
-- Click operator buttons (+, -, *, /) to select operation
-- Click `=` to calculate result
-- Click `C` to clear all
-- Click `CE` to clear entry
-- Click `⌫` to backspace
-- Click `±` to toggle sign
-- Click `.` to enter decimal point
+
+| Button | Action |
+|--------|--------|
+| `0-9` | Enter digits |
+| `+` | Addition |
+| `-` | Subtraction |
+| `*` | Multiplication |
+| `/` | Division |
+| `=` | Calculate result |
+| `C` | Clear all |
+| `CE` | Clear entry |
+| `⌫` | Backspace |
+| `±` | Toggle sign |
+| `.` | Decimal point |
 
 ### Keyboard Input
-- Numbers (0-9): Enter digits
-- `+`, `-`, `*`, `/`: Select operator
-- `Enter`: Calculate result
-- `Esc`: Clear all
-- `Backspace`: Delete last character
-- `.`: Enter decimal point
 
-## Division Logic Improvements
+| Key | Action |
+|-----|--------|
+| `0-9` | Enter digits |
+| `+ - * /` | Select operator |
+| `Enter` | Calculate result |
+| `Esc` | Clear all |
+| `Backspace` | Delete last character |
+| `.` | Decimal point |
+
+---
+
+## 📐 Division Logic Improvements
 
 The calculator includes several improvements to division operations:
 
-1. **Division-by-zero detection**: Enhanced regex pattern to detect `/0`, `/0.0`, `/00`, `/0.00`, etc.
-2. **Decimal input validation**: Robust handling of decimal points in complex expressions
-3. **Floating-point precision**: Uses Python's `Decimal` module for precise division results
+| Improvement | Description |
+|-------------|-------------|
+| 🔍 Division-by-zero Detection | Enhanced regex pattern to detect `/0`, `/0.0`, `/00`, `/0.00`, etc. |
+| 📱 Decimal Input Validation | Robust handling of decimal points in complex expressions |
+| 🧮 Floating-point Precision | Uses Python's `Decimal` module for precise division results |
 
-## Testing
+---
+
+## 🧪 Testing
 
 Run the test suite to verify functionality:
 
@@ -72,7 +103,9 @@ Run the test suite to verify functionality:
 python test_calculator.py
 ```
 
-## Project Structure
+---
+
+## 📁 Project Structure
 
 ```
 GUI_Calculator/
@@ -88,11 +121,21 @@ GUI_Calculator/
 └── .gitignore
 ```
 
-## License
+---
 
-This project is open source and available under the MIT License.
+## 📄 License
 
-## Acknowledgments
+This project is open source and available under the **MIT License**.
+
+---
+
+## 🙏 Acknowledgments
 
 - Optimized C++ implementation included for performance comparison
-- Build instructions for C++ version available in `COMPILATION_INSTRUCTIONS.md`
+- Build instructions for C++ version available in [`COMPILATION_INSTRUCTIONS.md`](COMPILATION_INSTRUCTIONS.md)
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ using Python and tkinter</sub>
+</div>
